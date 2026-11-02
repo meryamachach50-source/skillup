@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SKILLUP — Passeport de compétences</title>
+<style>
+:root{--pink:#ec75ad;--pink2:#ffe4f0;--blue:#3979c9;--blue2:#e5f0ff;--ink:#25334a;--muted:#718096;--bg:#f7f8fc}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#fff1f7,#edf5ff 65%,#f8faff);font-family:Inter,system-ui,Arial,sans-serif;color:var(--ink);min-height:100vh}
+header{padding:22px max(20px,calc((100% - 1080px)/2));display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:900;letter-spacing:2px;color:var(--blue);font-size:22px}.brand span{color:var(--pink)}
+header small{color:var(--muted)}
+main{max-width:1080px;margin:10px auto 50px;padding:0 18px;display:grid;grid-template-columns:290px 1fr;gap:22px}
+aside,.panel{background:#ffffffdf;border:1px solid #e8eaf2;border-radius:22px;box-shadow:0 12px 35px #34466b12}
+aside{padding:22px;height:max-content}.intro{background:linear-gradient(130deg,var(--pink2),var(--blue2));border-radius:17px;padding:18px;margin-bottom:22px}
+.intro h1{font-size:22px;line-height:1.2;margin:0 0 8px}.intro p{font-size:13px;color:#53647c;margin:0}
+.steps{list-style:none;padding:0;margin:0}.steps li{display:flex;gap:11px;align-items:center;padding:12px 8px;border-radius:12px;color:#68768c;font-size:14px}.steps li.active{background:#eef4ff;color:var(--blue);font-weight:750}.num{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#f1f3f8;font-size:12px}.active .num{background:var(--blue);color:white}
+.progress{height:7px;background:#edf0f6;border-radius:8px;margin:18px 0 8px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));transition:.3s}
+.panel{min-height:670px;display:flex;flex-direction:column;overflow:hidden}.top{padding:19px 24px;border-bottom:1px solid #edf0f5;display:flex;justify-content:space-between;align-items:center}.top strong{font-size:14px}.online{font-size:12px;color:#2b9b72}.online:before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#39bd8a;margin-right:7px}
+.chat{padding:25px;flex:1;overflow:auto;max-height:490px}.msg{display:flex;gap:10px;margin:0 0 18px;align-items:flex-start}.avatar{flex:0 0 34px;height:34px;border-radius:12px;background:linear-gradient(140deg,var(--pink),var(--blue));color:white;display:grid;place-items:center;font-weight:800;font-size:12px}.bubble{max-width:85%;background:#f1f5fc;border-radius:4px 16px 16px 16px;padding:13px 15px;font-size:14px;line-height:1.5}.user{justify-content:flex-end}.user .bubble{background:#e9dff8;border-radius:16px 4px 16px 16px}.user .avatar{background:#dceaff;color:var(--blue);order:2}
+.reply{padding:17px 22px;border-top:1px solid #edf0f5;background:#fff}.reply label{display:block;font-size:12px;font-weight:700;color:#64748b;margin-bottom:7px}.reply input,.reply textarea,.reply select{width:100%;border:1px solid #dce3ef;border-radius:12px;padding:12px 13px;font:inherit;color:var(--ink);outline:none;background:white}.reply input:focus,.reply textarea:focus,.reply select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3979c91a}.reply textarea{min-height:85px;resize:vertical}.actions{display:flex;gap:9px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+button{border:0;border-radius:12px;padding:11px 17px;font-weight:750;cursor:pointer;font-size:13px}.primary{background:linear-gradient(100deg,var(--pink),var(--blue));color:white}.secondary{background:#eef3fb;color:#48617f}.hint{font-size:11px;color:#8290a4;margin-top:8px}
+.summary{padding:24px}.summary h2{margin:0 0 5px}.summary p{color:var(--muted);font-size:14px}.summary-card{border:1px solid #e6eaf2;border-radius:15px;padding:15px;margin:12px 0}.summary-card h3{font-size:14px;color:var(--blue);margin:0 0 9px}.summary-card p{margin:5px 0;white-space:pre-wrap;color:#40516a}.hidden{display:none}
+@media(max-width:760px){main{grid-template-columns:1fr;margin-top:0}aside{padding:15px}.steps{display:grid;grid-template-columns:1fr 1fr}.steps li{font-size:12px;padding:7px}.panel{min-height:620px}.chat{padding:18px;max-height:450px}header{padding:16px 20px}}
+</style>
+</head>
+<body>
+<header><div class="brand">SKILL<span>UP</span></div><small>Passeport de compétences · Espace étudiant</small></header>
+<main>
+<aside>
+ <div class="intro"><h1>Ton parcours ne se résume pas à tes notes.</h1><p>Identifie ce que tu sais faire, montre-le et fais-le progresser.</p></div>
+ <ul class="steps" id="steps">
+  <li class="active"><span class="num">01</span> Mon profil</li><li><span class="num">02</span> Mes compétences</li>
+  <li><span class="num">03</span> Fiche détaillée</li><li><span class="num">04</span> Plan de progression</li><li><span class="num">05</span> Bilan</li>
+ </ul>
+ <div class="progress"><div class="bar" id="bar"></div></div><small id="progressText">Étape 1 sur 5</small>
+ <p class="hint">Tes réponses restent dans ce navigateur jusqu'à l'export ou l'effacement des données.</p>
+</aside>
+<section class="panel">
+ <div class="top"><strong>Assistant SKILLUP</strong><span class="online">Assistant actif</span></div>
+ <div class="chat" id="chat" aria-live="polite"></div>
+ <div class="reply" id="reply"></div>
+</section>
+</main>
+<script>
+const data={profile:{},skills:[],detail:{},plan:[],review:{}};
+let step=0, q=0, skillIndex=0;
+const chat=document.getElementById('chat'),reply=document.getElementById('reply');
+const sections=[
+ {title:"Mon profil",items:[
+  ["Nom et prénom","text","Quel est ton nom et ton prénom ?","name"],
+  ["Établissement / université","text","Dans quel établissement ou quelle université étudies-tu ?","school"],
+  ["Formation / filière / année","text","Quelle est ta formation, ta filière et ton année d'études ?","course"],
+  ["Projet ou objectif actuel","textarea","Quel est ton projet ou ton objectif actuel ?","goal"],
+  ["Présentation","textarea","Présente brièvement ton parcours, tes centres d’intérêt et les domaines dans lesquels tu souhaites progresser.","about"]]},
+ {title:"Mes compétences",items:[
+  ["Domaine","text","Choisis un domaine de compétence (ex. communication, organisation, numérique, analyse, travail en équipe ou compétence de ta filière).","domain"],
+  ["Compétence","text","Quelle compétence précise peux-tu démontrer dans ce domaine ?","competence"],
+  ["Niveau (1 à 4)","select","Quel niveau te correspond aujourd’hui ? 1 = débutant, 4 = très à l’aise.","level",["1 — Débutant","2 — En développement","3 — Autonome","4 — Maîtrisé"]],
+  ["Exemple concret / preuve","textarea","Donne un exemple concret ou une preuve : exposé, projet, document, tableur, étude de cas, TP…","proof"]]},
+ {title:"Fiche détaillée d’une compétence",items:[
+  ["Compétence choisie","text","Quelle compétence souhaites-tu présenter en détail ?","chosen"],
+  ["Situation / contexte","textarea","Dans quelle situation ou quel contexte as-tu mobilisé cette compétence ?","context"],
+  ["Réalisation personnelle","textarea","Qu’as-tu personnellement réalisé ? Décris tes actions.","actions"],
+  ["Résultat obtenu","textarea","Quel résultat as-tu obtenu ?","result"],
+  ["Preuve disponible","text","As-tu une preuve disponible (lien, document, capture…) ? Indique-la si oui.","evidence"],
+  ["Amélioration","textarea","Que souhaites-tu améliorer dans cette compétence ?","improve"]]},
+ {title:"Mon plan de progression",items:[
+  ["Compétence à développer","text","Quelle compétence souhaites-tu développer en priorité ?","target"],
+  ["Action concrète","textarea","Quelle action concrète vas-tu entreprendre pour progresser ?","action"],
+  ["Échéance","text","Pour quelle date ou période prévois-tu cette action ?","deadline"],
+  ["Avancement","select","Où en es-tu actuellement ?","status",["À commencer","En cours","Terminé"]]]},
+ {title:"Bilan et mise à jour",items:[
+  ["Date de mise à jour","text","Quelle est la date de mise à jour de ton passeport ?","date"],
+  ["Prochaine révision","text","Quand souhaites-tu faire ta prochaine révision ?","next"],
+  ["Principale progression","textarea","Quelle est ta principale progression depuis le début ?","progress"],
+  ["Compétence à renforcer","textarea","Quelle compétence souhaites-tu renforcer ensuite ?","nextskill"]]}
+];
+function bot(t){let d=document.createElement('div');d.className='msg';d.innerHTML='<div class="avatar">AI</div><div class="bubble"></div>';d.querySelector('.bubble').textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+function user(t){let d=document.createElement('div');d.className='msg user';d.innerHTML='<div class="avatar">MOI</div><div class="bubble"></div>';d.querySelector('.bubble').textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight}
+function current(){return sections[step].items[q]}
+function start(){bot("Bonjour ! Je suis l’assistant SKILLUP. Je vais t’accompagner pour compléter ton passeport de compétences. Il n’y a pas de mauvaise réponse : sois précis et donne des exemples lorsque tu le peux.");bot("Commençons par ton profil. "+current()[2]);renderInput()}
+function renderInput(){
+ const item=current();let [label,type,prompt,key,opts]=item;
+ let html='<label>'+label+'</label>';
+ if(type==='textarea')html+='<textarea id="answer" placeholder="Écris ta réponse ici…"></textarea>';
+ else if(type==='select')html+='<select id="answer">'+opts.map(x=>'<option>'+x+'</option>').join('')+'</select>';
+ else html+='<input id="answer" type="text" placeholder="Ta réponse…">';
+ html+='<div class="actions"><button class="secondary" onclick="skip()">Passer</button><button class="primary" onclick="submitAnswer()">Envoyer ma réponse →</button></div><div class="hint">Tu peux passer une question et compléter ton passeport plus tard.</div>';
+ reply.innerHTML=html;document.getElementById('answer').focus();
+}
+function bucket(){return step===0?data.profile:step===1?null:step===2?data.detail:step===3?null:data.review}
+function submitAnswer(){
+ const item=current(),val=document.getElementById('answer').value.trim();if(!val){document.getElementById('answer').focus();return}
+ user(val);
+ if(step===1){let s=data.skills[skillIndex]||(data.skills[skillIndex]={});s[item[3]]=val}
+ else if(step===3){let p=data.plan[0]||(data.plan[0]={});p[item[3]]=val}
+ else bucket()[item[3]]=val;
+ advance();
+}
+function skip(){user("Je préfère passer cette question pour le moment.");advance()}
+function advance(){
+ q++;
+ if(step===1&&q===sections[1].items.length){q=0;skillIndex++;if(skillIndex<3){bot("Très bien ! Ajoutons une autre compétence. Tu peux en décrire jusqu’à trois.");bot(current()[2]);renderInput();return}}
+ if(step===3&&q===sections[3].items.length){q=0;step++;showStep();return}
+ if(q>=sections[step].items.length){q=0;step++;showStep();return}
+ bot(current()[2]);renderInput();
+}
+function showStep(){
+ document.querySelectorAll('#steps li').forEach((x,i)=>x.classList.toggle('active',i===step));
+ document.getElementById('bar').style.width=(step/5*100)+'%';document.getElementById('progressText').textContent='Étape '+(step+1)+' sur 5';
+ if(step<5){bot("Passons à la partie "+sections[step].title+". "+current()[2]);renderInput()}else finish();
+}
+function finish(){
+ document.getElementById('bar').style.width='100%';document.getElementById('progressText').textContent='Passeport terminé';
+ bot("Bravo ! Tu as parcouru les cinq parties de ton passeport. Tu peux consulter le récapitulatif, télécharger tes réponses ou imprimer ton passeport.");
+ reply.innerHTML='<div class="actions"><button class="secondary" onclick="showSummary()">Voir mon récapitulatif</button><button class="primary" onclick="downloadData()">Télécharger mes réponses</button><button class="secondary" onclick="window.print()">Imprimer / PDF</button></div><p class="hint">Astuce : utilise « Imprimer / PDF » pour enregistrer une version PDF.</p>';
+}
+function showSummary(){
+ let wrap=document.createElement('div');wrap.className='summary';wrap.innerHTML='<h2>Mon passeport de compétences</h2><p>Récapitulatif de tes réponses SKILLUP.</p>';
+ const add=(title,obj)=>{let c=document.createElement('div');c.className='summary-card';let h=document.createElement('h3');h.textContent=title;c.appendChild(h);Object.entries(obj||{}).forEach(([k,v])=>{let p=document.createElement('p');p.textContent=k+': '+v;c.appendChild(p)});wrap.appendChild(c)};
+ add('01 · Mon profil',data.profile);data.skills.forEach((s,i)=>add('02 · Compétence '+(i+1),s));add('03 · Fiche détaillée',data.detail);data.plan.forEach((p,i)=>add('04 · Plan de progression',p));add('05 · Bilan',data.review);
+ reply.innerHTML='';reply.appendChild(wrap);let a=document.createElement('div');a.className='actions';a.innerHTML='<button class="primary" onclick="downloadData()">Télécharger mes réponses</button><button class="secondary" onclick="window.print()">Imprimer / PDF</button>';reply.appendChild(a);
+}
+function downloadData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Mon_passeport_SKILLUP.json';a.click();URL.revokeObjectURL(a.href)}
+start();
+</script>
+</body></html>
